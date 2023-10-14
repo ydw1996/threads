@@ -6,6 +6,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+// import { dark } from "@clerk/themes";
 
 function Topbar() {
   const isUserLoggedIn = true;
@@ -23,7 +24,7 @@ function Topbar() {
           Threads
         </p>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 place-content-around">
           <div className="block md:hidden">
             <SignedIn>
               <SignOutButton>
@@ -40,6 +41,7 @@ function Topbar() {
           </div>
           <OrganizationSwitcher
             appearance={{
+              // baseTheme: dark,
               elements: {
                 organizationSwitcherTrigger: "py-2 px-4",
               },
