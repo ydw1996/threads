@@ -15,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { UserValidation } from "@/lib/validations/user";
 import * as z from "zod";
 
 interface Props {
@@ -31,12 +32,12 @@ interface Props {
 
 const AccountProfile = ({ user, btnTitle }: Props) => {
   const form = useForm({
-    // resolver: zodResolver(UserValidation),
+    resolver: zodResolver(UserValidation),
     defaultValues: {
-      username: "",
-      profile_photo: "",
-      name: "",
-      bio: "",
+      profile_photo: user?.image || "",
+      name: user?.name || "",
+      username: user?.username || "",
+      bio: user?.bio || "",
     },
   });
 
@@ -58,14 +59,14 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       >
         <FormField
           control={form.control}
-          name="username"
+          name="profile_photo"
           render={({ field }) => (
             <FormItem className="flex items-center gap-4">
-              <FormLabel className="accout-form_image-label">
+              <FormLabel className="account-form_image-label">
                 {field.value ? (
                   <Image
                     src={field.value}
-                    alt="profile photo"
+                    alt="profile_icon"
                     width={96}
                     height={96}
                     priority
@@ -74,7 +75,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                 ) : (
                   <Image
                     src="/assets/profile.svg"
-                    alt="profile photo"
+                    alt="profile_icon"
                     width={24}
                     height={24}
                     className="object-contain"
@@ -85,14 +86,13 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                 <Input
                   type="file"
                   accept="image/*"
-                  placeholder="Upload a photo"
+                  placeholder="Add profile photo"
                   className="account-form_image-input"
                   onChange={(e) =>
-                    handleImage(e.field.onchange)
+                    handleImage(e, field.onChange)
                   }
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -100,14 +100,14 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
           control={form.control}
           name="name"
           render={({ field }) => (
-            <FormItem className="flex items-center gap-3 w-full">
-              <FormLabel className="text-base-semibold tex-light-2">
+            <FormItem className="flex flex-col w-full gap-3">
+              <FormLabel className="text-base-semibold text-light-2">
                 Name
               </FormLabel>
-              <FormControl className="flex-1 text-base-semibold text-gray-200">
+              <FormControl>
                 <Input
                   type="text"
-                  className="account-form_image-input no-focus"
+                  className="account-form_input no-focus"
                   {...field}
                 />
               </FormControl>
@@ -119,14 +119,14 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
           control={form.control}
           name="username"
           render={({ field }) => (
-            <FormItem className="flex items-center gap-3 w-full">
-              <FormLabel className="text-base-semibold tex-light-2">
+            <FormItem className="flex flex-col w-full gap-3">
+              <FormLabel className="text-base-semibold text-light-2">
                 Username
               </FormLabel>
-              <FormControl className="flex-1 text-base-semibold text-gray-200">
+              <FormControl>
                 <Input
                   type="text"
-                  className="account-form_image-input no-focus"
+                  className="account-form_input no-focus"
                   {...field}
                 />
               </FormControl>
@@ -138,14 +138,14 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
           control={form.control}
           name="bio"
           render={({ field }) => (
-            <FormItem className="flex items-center gap-3 w-full">
+            <FormItem className="flex flex-col w-full gap-3">
               <FormLabel className="text-base-semibold text-light-2">
                 Bio
               </FormLabel>
-              <FormControl className="flex-1 text-base-semibold text-gray-200">
+              <FormControl>
                 <Textarea
                   rows={10}
-                  className="accout-form_input no-focus"
+                  className="account-form_input no-focus"
                   {...field}
                 />
               </FormControl>
