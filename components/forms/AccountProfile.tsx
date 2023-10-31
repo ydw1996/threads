@@ -19,7 +19,7 @@ import { UserValidation } from "@/lib/validations/user";
 import * as z from "zod";
 import { ChangeEvent, useState } from "react";
 import { isBase64Image } from "@/lib/utils";
-import { useUploadThing } from "@/lib/uploadthing";
+import { useUploadThing } from "@/lib/validations/uploadthing";
 interface Props {
   user: {
     id: string;
@@ -79,7 +79,13 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
 
     if (hasImageChanged) {
       const imgRes = await startUpload(files);
+
+      if (imgRes && imgRes[0].fileUrl) {
+        values.profile_photo = imgRes[0].fileUrl;
+      }
     }
+
+    // TODO: Update user profile
   };
   return (
     <Form {...form}>
