@@ -20,8 +20,8 @@ import * as z from "zod";
 import { ChangeEvent, useState } from "react";
 import { isBase64Image } from "@/lib/utils";
 import { useUploadThing } from "@/lib/validations/uploadthing";
-import { useRouter } from "next/router";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { updateUser } from "@/lib/actions/updateUser";
 interface Props {
   user: {
     id: string;
@@ -90,7 +90,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
     }
 
     // TODO: Update user profile
-    await updataUser({
+    await updateUser({
       userId: user.id,
       username: values.username,
       name: values.name,
@@ -98,6 +98,12 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       image: values.profile_photo,
       path: pathname,
     });
+
+    if (pathname === "/profile/edit") {
+      router.back();
+    } else {
+      router.push("/");
+    }
   };
   return (
     <Form {...form}>
